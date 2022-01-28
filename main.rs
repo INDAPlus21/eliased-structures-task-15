@@ -41,81 +41,99 @@ Sample Input 1	Sample Output 1
 3 3
 */
 
+// one optimization is to use the "n integers"
+
 use std::io;
 use std::io::prelude::*;
+
+fn command1_or_2(mut seq: Vec<Vec<usize>>, commands: Vec<usize>) -> Vec<Vec<usize>> {
+    let mut index_to_move_to = 100001;
+
+    for i in 0..seq.len() {
+        // eprintln!("i'm in loop: {}", i);
+        if seq[i].contains(&commands[2]) {
+            if index_to_move_to == 100001 {
+                eprintln!("i'm changing index {}", i);
+                index_to_move_to = i;
+                break;
+            }
+        }
+    }
+    for i in 0..seq.len() {
+        if seq[i].contains(&commands[1]) {
+            if commands[0] == 1 {
+                // eprintln!("i'm changing vector");
+                let mut array_to_concat = seq[i].to_vec();
+                // eprintln!("array_to_concat: {:?}", array_to_concat);
+                seq.retain(|e| !e.contains(&commands[1]));
+                if index_to_move_to >= i {
+                    index_to_move_to -= 1;
+                } /*else {
+                      index_to_move_to += 1;
+                  }*/
+                seq[index_to_move_to].append(&mut array_to_concat);
+                eprintln!("{:?}", seq);
+                break;
+            } else if commands[0] == 2 {
+                if seq[i].contains(&commands[1]) {
+                    // eprintln!("i'm changing vector");
+                    seq[i].retain(|e| e != &commands[1]);
+                    seq[index_to_move_to].push(commands[1]);
+                    // eprintln!("{:?}", seq);
+                    break;
+                }
+            }
+        }
+    }
+
+    return seq
+}
+
+fn command3(seq: &Vec<Vec<usize>>, commands: Vec<usize>) {
+    for i in 0..seq.len() {
+        // eprintln!("i'm in loop: {}", i);
+        if seq[i].contains(&commands[1]) {
+            let sum: usize = seq[i].iter().sum();
+            println!("{} {}", seq[i].len(), sum);
+            break;
+        }
+    }
+}
 
 fn main() {
     let input = io::stdin();
 
-    let mut seq = vec![vec![1], vec![2], vec![3], vec![4], vec![5]];
+    // let mut seq = vec![vec![1], vec![2], vec![3], vec![4], vec![5]];
+
+    // eprintln!("{:?}", seq);
+    let mut seq: Vec<Vec<usize>> = vec![]; // = Vec::with_capacity(commands[i] as usize);
 
     let mut line_iter = 0;
 
     for _line in input.lock().lines().map(|_line| _line.unwrap()) {
-        eprintln!("{}", _line);
-        eprintln!("{:?}", seq);
-        eprintln!("{}", line_iter);
+        // eprintln!("{}", _line);
+        // eprintln!("{:?}", seq);
+        // eprintln!("{}", line_iter);
 
-        if line_iter != 0 {
-            let commands: Vec<u8> = _line
-                .split(' ')
-                .map(|s| s.trim())
-                .filter(|s| !s.is_empty())
-                .map(|s| s.parse().unwrap())
-                .collect();
+        let commands: Vec<usize> = _line
+        .split(' ')
+        .map(|s| s.trim())
+        .filter(|s| !s.is_empty())
+        .map(|s| s.parse().unwrap())
+        .collect();
 
-            if commands[0] == 1 || commands[0] == 2 {
-                let mut index_to_move_to = 100001;
-
-                for i in 0..seq.len() {
-                    eprintln!("i'm in loop: {}", i);
-                    if seq[i].contains(&commands[2]) {
-                        if index_to_move_to == 100001 {
-                            eprintln!("i'm changing index {}", i);
-                            index_to_move_to = i;
-                            break;
-                        }
-                    }
-                }
-                if commands[0] == 1 {
-                    for i in 0..seq.len() {
-                        if seq[i].contains(&commands[1]) {
-                            eprintln!("i'm changing vector");
-                            let mut array_to_concat = seq[i].to_vec();
-                            eprintln!("array_to_concat: {:?}", array_to_concat);
-                            seq.retain(|e| !e.contains(&commands[1]));
-                            if index_to_move_to >= i {
-                                index_to_move_to -= 1;
-                            } /*else {
-                                  index_to_move_to += 1;
-                              }*/
-                            seq[index_to_move_to].append(&mut array_to_concat);
-                            eprintln!("{:?}", seq);
-                            break;
-                        }
-                    }
-                } else if commands[0] == 2 {
-                    for i in 0..seq.len() {
-                        if seq[i].contains(&commands[1]) {
-                            eprintln!("i'm changing vector");
-                            seq[i].retain(|e| e != &commands[1]);
-                            seq[index_to_move_to].push(commands[1]);
-                            eprintln!("{:?}", seq);
-                            break;
-                        }
-                    }
-                }
-            } else if commands[0] == 3 {
-                for i in 0..seq.len() {
-                    eprintln!("i'm in loop: {}", i);
-                    if seq[i].contains(&commands[1]) {
-                        let sum: u8 = seq[i].iter().sum();
-                        println!("{} {}", seq[i].len(), sum);
-                        break;
-                    }
-                }
+        if line_iter == 0 {
+            for i in 1..commands[0]+1 {
+                seq.push(vec![i]);
             }
         }
-        line_iter += 1; 
+        if line_iter != 0 {
+            if commands[0] == 3 {
+                command3(&seq, commands)
+            } else {
+                seq = command1_or_2(seq, commands)
+            }
+        }
+        line_iter += 1;
     }
 }
