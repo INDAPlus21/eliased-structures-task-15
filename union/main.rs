@@ -43,6 +43,8 @@ Sample Input 1	Sample Output 1
 
 // one optimization is to use the "n integers"
 
+// is it related to multiple... 
+
 use std::io;
 use std::io::prelude::*;
 
