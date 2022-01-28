@@ -90,8 +90,12 @@ fn main() {
                     if index_to_move_to == 100001 {
                         eprintln!("i'm changing index");
                         index_to_move_to = i;
+                        break; 
                     }
-                } else if seq[i].contains(&commands[2]) {
+                } 
+            }
+            for i in 0..seq.len() {
+                if seq[i].contains(&commands[2]) {
                     eprintln!("i'm changing vector");
                     let mut array_to_concat = seq[i].to_vec();
                     eprintln!("array_to_concat: {:?}", array_to_concat);
@@ -111,15 +115,19 @@ fn main() {
 
             for i in 0..seq.len() {
                 eprintln!("i'm in loop: {}", i);
-                if seq[i].contains(&commands[1]) {
+                if seq[i].contains(&commands[2]) {
                     if index_to_move_to == 100001 {
                         eprintln!("i'm changing index");
                         index_to_move_to = i;
+                        break; 
                     }
-                } else if seq[i].contains(&commands[2]) {
+                } 
+            }
+            for i in 0..seq.len() {
+                if seq[i].contains(&commands[1]) {
                     eprintln!("i'm changing vector");
-                    seq[i].retain(|e| e != &commands[2]);
-                    seq[index_to_move_to].push(commands[2]);
+                    seq[i].retain(|e| e != &commands[1]);
+                    seq[index_to_move_to].push(commands[1]);
                     eprintln!("{:?}", seq);
                     break;
                 }
