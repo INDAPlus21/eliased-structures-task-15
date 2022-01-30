@@ -30,6 +30,11 @@ There are at most 20 cases, and the size of the input file does not exceed 5 MB.
 Output
 For each type-3 command, output 2 integers: the number of elements and the sum of elements.
 
+Sample Output 1
+ 3 12
+ 3 7
+ 2 8
+
 Sample Input 1	Sample Output 1
 5 7             3 12
 1 1 2           3 7
@@ -54,7 +59,7 @@ fn command1_or_2(mut seq: Vec<Vec<usize>>, commands: Vec<usize>) -> Vec<Vec<usiz
     for i in 0..seq.len() {
         if seq[i].contains(&commands[2]) {
             if index_to_move_to == 100001 {
-                eprintln!("i'm changing index {}", i);
+                // eprintln("i'm changing index {}", i);
                 index_to_move_to = i;
                 break;
             }
@@ -63,9 +68,9 @@ fn command1_or_2(mut seq: Vec<Vec<usize>>, commands: Vec<usize>) -> Vec<Vec<usiz
     for i in 0..seq.len() {
         if seq[i].contains(&commands[1]) {
             if commands[0] == 1 {
-                eprintln!("i'm changing vector");
+                // eprintln("i'm changing vector");
                 let mut array_to_concat = seq[i].to_vec();
-                eprintln!("array_to_concat: {:?}", array_to_concat);
+                // eprintln("array_to_concat: {:?}", array_to_concat);
                 seq.retain(|e| !e.contains(&commands[1]));
                 if index_to_move_to > i { // if the index to move to is greater than the current index (that will merge)
                     index_to_move_to -= 1;
@@ -84,15 +89,15 @@ fn command1_or_2(mut seq: Vec<Vec<usize>>, commands: Vec<usize>) -> Vec<Vec<usiz
                       index_to_move_to += 1;
                   }*/
                 seq[index_to_move_to].append(&mut array_to_concat);
-                eprintln!("{:?}", seq);
+                // eprintln("{:?}", seq);
                 break;
             } else if commands[0] == 2 {
                 if seq[i].contains(&commands[1]) {
-                    eprintln!("i'm changing vector");
+                    // eprintln("i'm changing vector");
                     seq[i].retain(|e| e != &commands[1]);
 
                     seq[index_to_move_to].push(commands[1]);
-                    eprintln!("{:?}", seq);
+                    // eprintln("{:?}", seq);
                     break;
                 }
             }
@@ -118,6 +123,7 @@ fn main() {
     let mut seq: Vec<Vec<usize>> = vec![]; // = Vec::with_capacity(commands[i] as usize);
 
     let mut line_iter = 0;
+    let mut length_of_commands = 0; 
 
     for _line in input.lock().lines().map(|_line| _line.unwrap()) {
         let commands: Vec<usize> = _line
@@ -127,20 +133,26 @@ fn main() {
         .map(|s| s.parse().unwrap())
         .collect();
 
+        // eprintln("line iter: {}", line_iter);
+
         if line_iter == 0 {
+            length_of_commands = commands[1]; 
             for i in 1..commands[0]+1 {
                 seq.push(vec![i]);
             }
         } else if line_iter != 0 {
-            eprintln!("{}", _line);
-            eprintln!("{:?}", seq);
-            eprintln!("{}", line_iter);    
+            // eprintln("{:?}", seq);
             if commands[0] == 3 {
                 command3(&seq, commands)
             } else {
                 seq = command1_or_2(seq, commands)
             }
         }
-        line_iter += 1;
+        line_iter += 1; 
+
+        if line_iter == length_of_commands+1 {
+            seq = vec![]; 
+            line_iter = 0; 
+        }
     }
 }
