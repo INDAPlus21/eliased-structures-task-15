@@ -1,11 +1,4 @@
-print("hello world")
-
-# node3 = {"key": 2, "height": 0, "left": None, "right": None}
-# node2 = {"key": 3, "height": 0, "left": None, "right": None}
-# node1 = {"key": 1, "height": 1, "left": node2, "right": node3}
-
 def insert(node, key):
-    # print("node initial: ", node, "key: ", key)
     if node == None:
         # print("inserted", key)
         return {"key": key, "height": 0, "left": None, "right": None}
@@ -39,8 +32,8 @@ def new_height(node):
 
 
 def right_rotation(node):
-    # this isn't right: https://www.wikiwand.com/en/Right_rotation#:~:text=In%20a%20binary%20search%20tree,becomes%20X's%20new%20left%20child.
     print("node in right rotation: ", node)
+
     new_root = node["left"]
     node["left"] = new_root["right"]
     new_root["right"] = node
@@ -50,18 +43,12 @@ def right_rotation(node):
     new_root["height"] = new_height(new_root)
 
     print("new_root: ", new_root)
-    # else: 
-        # node["left"] = None # Already true 
-        # node_left["right"] = node # Doesn't make sense 
-        # node["height"] = new_height(node) # And doesn't do anything then 
-        # node_left["height"] = new_height(node_left) # Doesn't make sense either 
+
     return new_root
 
 
 def left_rotation(node):
     print("node in left rotation: ", node)
-    # y = node["right"]
-    # node["right"] = y["left"]
 
     new_root = node["right"]
     node["right"] = new_root["left"]
@@ -73,17 +60,6 @@ def left_rotation(node):
 
     print("new_root: ", new_root)
 
-    # node["right"] = right["left"] # right's left child becomes x's new right child 
-    # print("node after first thing in rotation: ", node)
-
-    # ok. The reason this doesn't work is that node doesn't update... or 
-    # right["left"] = node # practically makes the middle node the parent node... 
-    # print("node after second thing in rotation: ", node)
-
-    # Update height 
-    # node["height"] = new_height(node["height"]) # update old parent node height 
-    # right["height"] = new_height(right["height"]) # update new parent node height 
-    # print("node after left rotation: ", node)
     return new_root
 
 def left_right_rotation(node):
@@ -135,23 +111,35 @@ def balance_of_node(node):
 
 def pretty_print(node, level=0):
     if node != None:
-        pretty_print(node["left"], level+1)
-        print(" "*4*level, "->", node["key"])
         pretty_print(node["right"], level+1)
+        print(" "*4*level, "->", node["key"])
+        pretty_print(node["left"], level+1)
     # for i in range(100):
         # print(root["key"])
         # pretty_print()
 
+def insert_many(keys):
+    root = insert(None, keys[0])
+    for i in keys[1:]:
+        root = insert(root, i)
+    pretty_print(root) 
 
-root = insert(None, 3)
-print("root: ", root)
-pretty_print(root) 
-root = insert(root, 4)
-pretty_print(root) 
-print("root: ", root)
-root = insert(root, 5)
-print("root: ", root)
-pretty_print(root) 
+insert_many([18, 5, 11, 12, 17, 4, 8])
+# insert_many([13, 10, 15, 5, 11, 16, 4, 6])
+# insert_many([1, 2, 3])
+# pretty_print(root) 
+# root = insert(None, 3)
+# print("root: ", root)
+# pretty_print(root) 
+# root = insert(root, 4)
+# pretty_print(root) 
+# print("root: ", root)
+# root = insert(root, 5)
+# root = insert(root, 6)
+# root = insert(root, 10)
+# root = insert(root, 2)
+# print("root: ", root)
+# pretty_print(root) 
 # print("root: ", root)
 # insert(root, 5)
 # pretty_print(root) 
