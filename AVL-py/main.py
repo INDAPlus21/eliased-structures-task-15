@@ -1,6 +1,5 @@
 def insert(node, key):
     if node == None:
-        # print("inserted", key)
         return {"key": key, "height": 0, "left": None, "right": None}
     elif key < node["key"]:
         # to_insert = insert(node["left"], key) # is it that it gets the left, not right
@@ -19,7 +18,6 @@ def insert(node, key):
     # print("node in insert:", node, "key: ", key) # remember than this can happen after
 
     return node
-
 
 def new_height(node):
     left_height = -1
@@ -114,40 +112,25 @@ def pretty_print(node, level=0):
         pretty_print(node["right"], level+1)
         print(" "*4*level, "->", node["key"])
         pretty_print(node["left"], level+1)
-    # for i in range(100):
-        # print(root["key"])
-        # pretty_print()
 
 def insert_many(keys):
     root = insert(None, keys[0])
     for i in keys[1:]:
         root = insert(root, i)
     pretty_print(root) 
+    return root 
 
-insert_many([18, 5, 11, 12, 17, 4, 8])
-# insert_many([13, 10, 15, 5, 11, 16, 4, 6])
-# insert_many([1, 2, 3])
-# pretty_print(root) 
-# root = insert(None, 3)
-# print("root: ", root)
-# pretty_print(root) 
-# root = insert(root, 4)
-# pretty_print(root) 
-# print("root: ", root)
-# root = insert(root, 5)
-# root = insert(root, 6)
-# root = insert(root, 10)
-# root = insert(root, 2)
-# print("root: ", root)
-# pretty_print(root) 
-# print("root: ", root)
-# insert(root, 5)
-# pretty_print(root) 
-# print("root: ", root)
-# insert(root, 6)
-# insert(root, 6)
-# insert(root, 7)
-# insert(root, 3)
-# print("final root: ", root)
+def tests(): 
+    if insert_many([1, 2, 3]) == {'key': 2, 'height': 1, 'left': {'key': 1, 'height': 0, 'left': None, 'right': None}, 'right': {'key': 3, 'height': 0, 'left': None, 'right': None}}: 
+        print("passed first test")
+    if insert_many([18, 5, 11, 12, 17, 4, 8]) == {'key': 12, 'height': 3, 'left': {'key': 5, 'height': 2, 'left': {'key': 4, 'height': 0, 'left': None, 'right': None}, 'right': {'key': 11, 'height': 1, 'left': {'key': 8, 'height': 0, 'left': None, 'right': None}, 'right': None}}, 'right': {'key': 18, 'height': 1, 'left': {'key': 17, 'height': 0, 'left': None, 'right': None}, 'right': None}}: 
+        print("passed second test")
 
+tests()
+
+# root = insert_many([18, 5, 11, 12, 17, 4, 8])
+# root = insert_many([1, 2, 3])
+# root = delete(root, 5)
+# root = delete(root, 11)
 # pretty_print(root)
+# insert_many([13, 10, 15, 5, 11, 16, 4, 6])
