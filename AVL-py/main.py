@@ -12,12 +12,23 @@ def insert(node, key):
     # print("up loop :", node, "key: ", key) # remember than this can happen after
     node["height"] = new_height(node)
 
-    print("root before balance: ", node)
+    # print("root before balance: ", node)
     node = balance(node)
-    print("will return: ", node)
+    # print("will return: ", node)
     # print("node in insert:", node, "key: ", key) # remember than this can happen after
 
     return node
+
+def invert(node):
+    if node == None:
+        return None
+    else:
+        temp = node["left"]
+        node["left"] = invert(node["right"])
+        node["right"] = invert(temp)
+
+    return node
+
 
 def new_height(node):
     left_height = -1
@@ -30,7 +41,7 @@ def new_height(node):
 
 
 def right_rotation(node):
-    print("node in right rotation: ", node)
+    # print("node in right rotation: ", node)
 
     new_root = node["left"]
     node["left"] = new_root["right"]
@@ -40,13 +51,13 @@ def right_rotation(node):
     new_root["right"]["height"] = new_height(new_root["right"])
     new_root["height"] = new_height(new_root)
 
-    print("new_root: ", new_root)
+    # print("new_root: ", new_root)
 
     return new_root
 
 
 def left_rotation(node):
-    print("node in left rotation: ", node)
+    # print("node in left rotation: ", node)
 
     new_root = node["right"]
     node["right"] = new_root["left"]
@@ -56,7 +67,7 @@ def left_rotation(node):
     new_root["left"]["height"] = new_height(new_root["left"])
     new_root["height"] = new_height(new_root)
 
-    print("new_root: ", new_root)
+    # print("new_root: ", new_root)
 
     return new_root
 
@@ -72,7 +83,7 @@ def right_left_rotation(node):
 
 def balance(node):
     balance_value = balance_of_node(node)
-    print("balance_value: ", balance_value)
+    # print("balance_value: ", balance_value)
 
     # Right heavy
     if balance_value == 2:
@@ -103,7 +114,7 @@ def balance_of_node(node):
     else:
         left_height = node["left"]["height"]+1
 
-    print("left height: ", left_height, "right_height: ", right_height, "of: ", node["key"])
+    # print("left height: ", left_height, "right_height: ", right_height, "of: ", node["key"])
 
     return right_height - left_height
 
@@ -112,6 +123,8 @@ def pretty_print(node, level=0):
         pretty_print(node["right"], level+1)
         print(" "*4*level, "->", node["key"])
         pretty_print(node["left"], level+1)
+    if level == 0:
+        print("-------------------------")
 
 def insert_many(keys):
     root = insert(None, keys[0])
@@ -130,6 +143,9 @@ tests()
 
 # root = insert_many([18, 5, 11, 12, 17, 4, 8])
 # root = insert_many([1, 2, 3])
+# root = invert(root)
+# pretty_print(root)
+
 # root = delete(root, 5)
 # root = delete(root, 11)
 # pretty_print(root)

@@ -1,5 +1,7 @@
 use std::cmp;
 
+// NOTE THAT THIS ISN'T WORKING. IT'S THE PYTHON VERSION THAT'S WORKING
+
 #[derive(Debug)]
 #[derive(Clone)]
 #[derive(PartialEq)]
